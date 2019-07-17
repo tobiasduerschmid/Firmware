@@ -61,14 +61,17 @@ if [ "$(uname)" == "Darwin" ]; then
     export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 fi
 
+
 ant create_run_jar copy_res
 cd out/production
+
+export CLASSPATH=$CLASSPATH:/Users/jeaniechen/Desktop/CMU_REU/Firmware/Tools/jMAVSim/lib/json-simple-1.1.1.jar
 
 java -XX:GCTimeRatio=20 -Djava.ext.dirs= -jar jmavsim_run.jar $device $extra_args
 ret=$?
 if [ $ret -ne 0 -a $ret -ne 130 ]; then # 130 is Ctrl-C
 	# if the start of java fails, it's probably because the GC option is not
 	# understood. Try starting without it
-	java -Djava.ext.dirs= -jar jmavsim_run.jar $device $extra_args
+	java -vvvvv -cp="$LIB" -Djava.ext.dirs= -jar jmavsim_run.jar $device $extra_args
 fi
 

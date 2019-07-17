@@ -1,0 +1,15 @@
+{
+  "deactivate_sensors" : false,
+  "rotor_orientation" : "+",
+  "gravity" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 9.80665
+  },
+  "ground_level" : 0.0,
+  "magnetic_field" : {
+      "x" : 0.21523,
+      "y" : 0.0,
+      "z" : 0.42741
+  }
+}
