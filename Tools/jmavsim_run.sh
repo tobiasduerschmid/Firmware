@@ -65,7 +65,7 @@ fi
 ant create_run_jar copy_res
 cd out/production
 
-export CLASSPATH=$CLASSPATH:/Users/jeaniechen/Desktop/CMU_REU/Firmware/Tools/jMAVSim/lib/json-simple-1.1.1.jar
+export CLASSPATH=$CLASSPATH:${SCRIPT_DIR}/Tools/jMAVSim/lib/json-simple-1.1.1.jar
 
 java -XX:GCTimeRatio=20 -Djava.ext.dirs= -jar jmavsim_run.jar $device $extra_args
 ret=$?
