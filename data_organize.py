@@ -2,6 +2,7 @@ import pandas as pd
 import glob
 import os
 import time
+import json
 from datetime import datetime
 
 def main():
@@ -46,6 +47,12 @@ def main():
     detector = vehicle_status['failure_detector_status'].value_counts()
     failures_detected = detector.get(key=1) if len(mission) == 2 else 0
 
+    # read config.json and add those environment variables to csv file
+    # os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
+    # with open("config.json") as json_file:
+    #     data = json.load(json_file)
+        
+
     # create dataframe
     data = [millisec_duration, battery_used, num_ground_contacts, engine_fails, mission_fails, failures_detected]
     df = pd.DataFrame([data], columns=['Duration (millisec)', 'Battery Consumption', 'Number of Ground Contacts', 
@@ -60,8 +67,8 @@ def main():
 if __name__ == "__main__":
     s = datetime.today().strftime('%Y-%m-%d')
     # call pyulog to create time.csv and all other csv files
-    # os.chdir("/Users/jeaniechen/Documents/QGroundControl/Logs")
-    os.chdir("/Users/jeaniechen/Desktop/CMU\ REU/Firmware/build/logs/%s" % s)
+    os.chdir("/Users/jeaniechen/Documents/QGroundControl/Logs")
+    # os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware/build/log/%s" % s)
     file = glob.glob('*.ulg')
     ulg_info = "ulog_info {}".format(file[0])
     os.system(ulg_info)
