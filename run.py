@@ -36,7 +36,11 @@ def generate_wind_values(start, stop):
 def main():
     # can use random.choice() to choose random element from list
     # space of values for each parameter
-    deactivate_sensor_values = [True, False]
+    # deactivate_sensor_values = [True, False]
+    sensor_noise_acc = random.uniform(0.01, 0.1)
+    sensor_noise_gyo = random.uniform(0.001, 0.09)
+    sensor_noise_mag = random.uniform(0.0001, 0.01)
+    sensor_noise_prs = random.uniform(0.01, 0.9)
     rotor_orientation_values = ["+", "x"]
     # earth, moon, mars, jupiter, pluto, sun
     gravity_values = [{"x":0.0, "y":0.0, "z":9.80665}, 
@@ -68,14 +72,18 @@ def main():
 
     # Prob need to have a bunch of for loops to try every possible combo of values later
     # create random json string
-    a = random.choice(deactivate_sensor_values)
+    # a = random.choice(deactivate_sensor_values)
     b = random.choice(rotor_orientation_values)
     c = random.choice(gravity_values)
     d = random.choice(magnetic_field_values)
     e = random.choice(wind_values)
     f = random.choice(wind_deviation_values)
     x = {
-        "deactivate_sensors" : a,
+        # "deactivate_sensors" : a,
+        "sensor_noise_acc" : sensor_noise_acc,
+        "sensor_noise_gyo" : sensor_noise_gyo,
+        "sensor_noise_mag" : sensor_noise_mag,
+        "sensor_noise_prs" : sensor_noise_prs,
         "rotor_orientation" : b,
         "gravity" : c,
         "magnetic_field" : d,
