@@ -49,20 +49,36 @@ def main():
 
     # read config.json and add those environment variables to csv file
     # os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
-    # with open("config.json") as json_file:
-    #     data = json.load(json_file)
+    with open("/Users/jeaniechen/Desktop/CMU_REU/Firmware/config.json") as json_file:
+        data = json.load(json_file)
+        acc = data["sensor_noise_acc"]
+        gyo = data["sensor_noise_gyo"]
+        mag = data["sensor_noise_mag"]
+        prs = data["sensor_noise_prs"]
+        rotor = data["rotor_orientation"]
+        grav = data["gravity"]
+        magF = data["magnetic_field"]
+        wind = data["wind"]
+        wd = data["wind_deviation"]
         
 
     # create dataframe
-    data = [millisec_duration, battery_used, num_ground_contacts, engine_fails, mission_fails, failures_detected]
-    df = pd.DataFrame([data], columns=['Duration (millisec)', 'Battery Consumption', 'Number of Ground Contacts', 
-                                 'Number of Engine Failures', 'Number of Mission Failures', 'Number of Failures Detected'])
+    data = [acc, gyo, mag, prs, rotor, grav["x"], grav["y"], grav["z"], magF["x"], magF["y"], magF["z"], 
+            wind["x"], wind["y"], wind["z"], wd["x"], wd["y"], wd["z"], millisec_duration, battery_used, 
+            num_ground_contacts, engine_fails, mission_fails, failures_detected]
+    df = pd.DataFrame([data], columns=['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
+                                'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
+                                'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
+                                'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Duration (millisec)', 
+                                'Battery Consumption', 'Number of Ground Contacts', 
+                                'Number of Engine Failures', 'Number of Mission Failures', 'Number of Failures Detected'])
 
     # testing remove all csv and ulog files before creating one
     os.system("rm *.csv *.ulg")
 
-    # testing if to_csv works
-    df.to_csv("missions.csv", encoding='utf-8', index=False)
+    # append dataframe as row to csv file
+    with open("../missions.csv", "a") as f:
+        df.to_csv(f, encoding='utf-8', index=False, header=False)
 
 if __name__ == "__main__":
     s = datetime.today().strftime('%Y-%m-%d')

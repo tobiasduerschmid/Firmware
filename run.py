@@ -12,7 +12,7 @@ def generate_mag_values(start, stop):
     # maybe use random.randrange()?
     rand_list = []
     for i in range(3):
-        num = random.uniform(start, stop)
+        num = '%.3f'%(random.uniform(start, stop))
         rand_list.append(num)
     # create dictionary
     temp_dict["x"] = rand_list[0]
@@ -37,10 +37,10 @@ def main():
     # can use random.choice() to choose random element from list
     # space of values for each parameter
     # deactivate_sensor_values = [True, False]
-    sensor_noise_acc = random.uniform(0.01, 0.1)
-    sensor_noise_gyo = random.uniform(0.001, 0.09)
-    sensor_noise_mag = random.uniform(0.0001, 0.01)
-    sensor_noise_prs = random.uniform(0.01, 0.9)
+    sensor_noise_acc = '%.3f'%(random.uniform(0.01, 0.1))
+    sensor_noise_gyo = '%.3f'%(random.uniform(0.001, 0.09))
+    sensor_noise_mag = '%.3f'%(random.uniform(0.0001, 0.01))
+    sensor_noise_prs = '%.3f'%(random.uniform(0.01, 0.9))
     rotor_orientation_values = ["+", "x"]
     # earth, moon, mars, jupiter, pluto, sun
     gravity_values = [{"x":0.0, "y":0.0, "z":9.80665}, 
@@ -74,7 +74,7 @@ def main():
     # create random json string
     # a = random.choice(deactivate_sensor_values)
     b = random.choice(rotor_orientation_values)
-    c = random.choice(gravity_values)
+    # c = random.choice(gravity_values)
     d = random.choice(magnetic_field_values)
     e = random.choice(wind_values)
     f = random.choice(wind_deviation_values)
@@ -85,7 +85,7 @@ def main():
         "sensor_noise_mag" : sensor_noise_mag,
         "sensor_noise_prs" : sensor_noise_prs,
         "rotor_orientation" : b,
-        "gravity" : c,
+        "gravity" : {"x":0.0, "y":0.0, "z":9.80665},   # don't change gravity
         "magnetic_field" : d,
         "wind" : e,
         "wind_deviation" : f

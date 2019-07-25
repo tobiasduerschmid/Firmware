@@ -1,24 +1,27 @@
 {
-    "deactivate_sensors": false, 
-    "magnetic_field": {
-        "y": 0.032634804501503765, 
-        "x": 0.6315040532718575, 
-        "z": 0.050317958869560246
+    "wind_deviation": {
+        "y": 4.2, 
+        "x": 1.7, 
+        "z": 8.0
     }, 
+    "sensor_noise_acc": "0.050", 
+    "sensor_noise_mag": "0.010", 
+    "rotor_orientation": "+", 
+    "magnetic_field": {
+        "y": "0.041", 
+        "x": "0.640", 
+        "z": "0.405"
+    }, 
+    "sensor_noise_gyo": "0.053", 
     "gravity": {
         "y": 0.0, 
         "x": 0.0, 
-        "z": 1.62
+        "z": 9.80665
     }, 
-    "wind_deviation": {
-        "y": 0.1, 
-        "x": 5.4, 
-        "z": 7.6
-    }, 
-    "rotor_orientation": "x", 
     "wind": {
-        "y": 12.2, 
-        "x": 1.4, 
-        "z": 2.4
-    }
+        "y": 2.0, 
+        "x": 11.6, 
+        "z": 2.6
+    }, 
+    "sensor_noise_prs": "0.375"
 }
