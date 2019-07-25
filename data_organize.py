@@ -1,4 +1,5 @@
 import pandas as pd
+import os.path
 import glob
 import os
 import time
@@ -76,6 +77,16 @@ def main():
     # testing remove all csv and ulog files before creating one
     os.system("rm *.csv *.ulg")
 
+    # if csv file doesn't exist, create it
+    if os.path.exists("../missions.csv") == False:
+        header = pd.DataFrame([['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
+                                'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
+                                'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
+                                'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Duration (millisec)', 
+                                'Battery Consumption', 'Number of Ground Contacts', 
+                                'Number of Engine Failures', 'Number of Mission Failures', 'Number of Failures Detected']])
+        header.to_csv("../missions.csv", index=False)
+
     # append dataframe as row to csv file
     with open("../missions.csv", "a") as f:
         df.to_csv(f, encoding='utf-8', index=False, header=False)
@@ -83,8 +94,8 @@ def main():
 if __name__ == "__main__":
     s = datetime.today().strftime('%Y-%m-%d')
     # call pyulog to create time.csv and all other csv files
-    os.chdir("/Users/jeaniechen/Documents/QGroundControl/Logs")
-    # os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware/build/log/%s" % s)
+    # os.chdir("/Users/jeaniechen/Documents/QGroundControl/Logs")
+    os.chdir("./build/px4_sitl_default/tmp/rootfs/log/%s" % s)
     file = glob.glob('*.ulg')
     ulg_info = "ulog_info {}".format(file[0])
     os.system(ulg_info)

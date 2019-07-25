@@ -13,7 +13,7 @@ def generate_mag_values(start, stop):
     rand_list = []
     for i in range(3):
         num = '%.3f'%(random.uniform(start, stop))
-        rand_list.append(num)
+        rand_list.append(float(num))
     # create dictionary
     temp_dict["x"] = rand_list[0]
     temp_dict["y"] = rand_list[1]
@@ -80,10 +80,10 @@ def main():
     f = random.choice(wind_deviation_values)
     x = {
         # "deactivate_sensors" : a,
-        "sensor_noise_acc" : sensor_noise_acc,
-        "sensor_noise_gyo" : sensor_noise_gyo,
-        "sensor_noise_mag" : sensor_noise_mag,
-        "sensor_noise_prs" : sensor_noise_prs,
+        "sensor_noise_acc" : float(sensor_noise_acc),
+        "sensor_noise_gyo" : float(sensor_noise_gyo),
+        "sensor_noise_mag" : float(sensor_noise_mag),
+        "sensor_noise_prs" : float(sensor_noise_prs),
         "rotor_orientation" : b,
         "gravity" : {"x":0.0, "y":0.0, "z":9.80665},   # don't change gravity
         "magnetic_field" : d,
@@ -97,7 +97,7 @@ def main():
 
 
 if __name__ == "__main__":
-    os.system("open -a QGroundControl")
+    # os.system("open -a QGroundControl")
     os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
     main()
     os.system("make px4_sitl jmavsim")
