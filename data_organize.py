@@ -74,7 +74,9 @@ def main():
                                 'Battery Consumption', 'Number of Ground Contacts', 
                                 'Number of Engine Failures', 'Number of Mission Failures', 'Number of Failures Detected'])
 
-    # testing remove all csv and ulog files before creating one
+    # remove all csv and ulog files before creating one
+    s = datetime.today().strftime('%Y-%m-%d')
+    os.chdir("./build/px4_sitl_default/tmp/rootfs/log/%s" % s)
     os.system("rm *.csv *.ulg")
 
     # if csv file doesn't exist, create it
