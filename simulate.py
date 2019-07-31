@@ -3,6 +3,7 @@ import time
 
 def main():
      # testing
+    #  print("hi from simulate.py")
     os.system("open -a QGroundControl")    # for automatic logging
     os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
     os.system("make px4_sitl jmavsim")
