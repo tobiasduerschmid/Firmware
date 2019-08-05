@@ -16,9 +16,10 @@ def main():
         header.to_csv("./build/px4_sitl_default/tmp/rootfs/log/error_log.csv", index=False)
 
     exit_conditions = ["Dangerous battery level!", "Error landing", "Error taking off", "Error arming drone", "Waiting for drone to be ready to arm"]
-    for i in range(5):
+    
+    # can change the number of simulations
+    for i in range(10):
         os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
-        # px4 = subprocess.Popen(['make', 'px4_sitl', 'jmavsim'], stdout=subprocess.PIPE)
         px4 = subprocess.Popen(['python', 'run.py'], stdout=subprocess.PIPE)
         
         # store config file variables
@@ -46,6 +47,7 @@ def main():
 
         error = False
         num_arming = 0
+        # read terminal output from missionapp
         for line in mission.stdout:
             print(line.rstrip())
             if any(x in line for x in exit_conditions):
@@ -176,14 +178,6 @@ def main():
                     os.system("rm *.ulg")
                     break
 
-                # # success
-                # if "Landed" in line:
-                #     os.system("python data_organize.py")
-                #     time.sleep(15)
-                #     # kill px4, jmavsim, and mission
-                #     px4.kill()
-                #     mission.kill()
-
         if error == False:
             # wait for mission to end
             mission.communicate()
@@ -196,4 +190,5 @@ def main():
             mission.kill()
 
 
-main()
+if __name__ == "__main__":
+    main()
