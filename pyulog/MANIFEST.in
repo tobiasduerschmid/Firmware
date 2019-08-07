@@ -1,0 +1,3 @@
+include versioneer.py
+include pyulog/_version.py
+include LICENSE.md
