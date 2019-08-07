@@ -19,7 +19,7 @@ def main():
     
     # can change the number of simulations
     for i in range(10):
-        os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
+        os.chdir("/Users/jeanie/Desktop/Firmware")
         px4 = subprocess.Popen(['python', 'run.py'], stdout=subprocess.PIPE)
         
         # store config file variables
@@ -37,11 +37,11 @@ def main():
 
         # wait for a bit for px4 to get ready before starting mission
         time.sleep(15)
-        os.chdir("/Users/jeaniechen/Desktop/CMU_REU/missionapp")
+        os.chdir("/Users/jeanie/Desktop/missionapp")
         os.system("make")
         mission = subprocess.Popen(['./missionapp', '--enforcer=ElasticEnforcer', 'udp://'], 
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
-        os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
+        os.chdir("/Users/jeanie/Desktop/Firmware")
         # mission = subprocess.Popen(['python', 'mission.py'], 
         #                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
 

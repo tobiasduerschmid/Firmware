@@ -49,7 +49,7 @@ def main():
     failures_detected = detector.get(key=1) if len(mission) == 2 else 0
 
     # read config.json and add those environment variables to csv file
-    os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
+    os.chdir("/Users/jeanie/Desktop/Firmware")
     with open("./config.json") as json_file:
         data = json.load(json_file)
         acc = data["sensor_noise_acc"]

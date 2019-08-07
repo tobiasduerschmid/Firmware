@@ -98,7 +98,7 @@ def main():
 
 if __name__ == "__main__":
     # os.system("open -a QGroundControl")
-    os.chdir("/Users/jeaniechen/Desktop/CMU_REU/Firmware")
+    os.chdir("/Users/jeanie/Desktop/Firmware")
     main()
     os.system("make px4_sitl jmavsim")
     
