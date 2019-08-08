@@ -106,3 +106,4 @@ if __name__ == "__main__":
     ulg_to_csv = "ulog2csv {}".format(file[0])
     os.system(ulg_to_csv)
     main()
+    

@@ -8,6 +8,7 @@ from __future__ import print_function
 import argparse
 
 from .core import ULog
+import os
 
 #pylint: disable=too-many-locals, unused-wildcard-import, wildcard-import
 #pylint: disable=invalid-name
@@ -23,6 +24,7 @@ def show_info(ulog, verbose):
 
     #======================================================================================
     # Store time duration into a new csv file
+    os.system("pwd")
     f = open("time.csv", "w")
     f.write("Duration\n")
     f.write("{:d}:{:02d}:{:02d}".format(h2, m2, s2))
