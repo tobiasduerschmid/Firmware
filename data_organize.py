@@ -20,7 +20,7 @@ def main():
     # minute = int(duration[2:4], 10)
     # seconds = int(duration[5:7], 10)
     # millisec_duration = hour*60*60*1000 + minute*60*1000 + seconds*1000
-    os.system("mv /User/jeanie/Desktop/missionapp/time.txt $PWD/")
+    os.system("mv /Users/jeanie/Desktop/missionapp/time.txt $PWD/")
     time = open("time.txt", "r")
     millisec_duration = time.read()
 
