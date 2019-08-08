@@ -39,7 +39,7 @@ def main():
         time.sleep(15)
         os.chdir("/Users/jeanie/Desktop/missionapp")
         os.system("make")
-        mission = subprocess.Popen(['./missionapp', '--enforcer=ElasticEnforcer', 'udp://'], 
+        mission = subprocess.Popen(['./missionapp', '--enforcer=ElasticEnforcer', 'udp://', '--user'], 
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
         os.chdir("/Users/jeanie/Desktop/Firmware")
         # mission = subprocess.Popen(['python', 'mission.py'], 
