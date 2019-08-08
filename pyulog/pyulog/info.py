@@ -9,6 +9,7 @@ import argparse
 
 from .core import ULog
 import os
+from datetime import datetime
 
 #pylint: disable=too-many-locals, unused-wildcard-import, wildcard-import
 #pylint: disable=invalid-name
@@ -24,11 +25,12 @@ def show_info(ulog, verbose):
 
     #======================================================================================
     # Store time duration into a new csv file
-    os.system("pwd")
+    s = datetime.today().strftime('%Y-%m-%d')
     f = open("time.csv", "w")
     f.write("Duration\n")
     f.write("{:d}:{:02d}:{:02d}".format(h2, m2, s2))
     f.close()
+    os.system("mv time.csv ../build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     #======================================================================================
 
     dropout_durations = [dropout.duration for dropout in ulog.dropouts]
