@@ -51,6 +51,6 @@ ret=$?
 if [ $ret -ne 0 -a $ret -ne 130 ]; then # 130 is Ctrl-C
 	# if the start of java fails, it's probably because the GC option is not
 	# understood. Try starting without it
-	java -vvvvv -cp="$LIB" -Djava.ext.dirs= -jar jmavsim_run.jar $device $extra_args
+	java -cp="$LIB" -Djava.ext.dirs= -jar jmavsim_run.jar $device $extra_args
 fi
 
