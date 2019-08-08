@@ -25,7 +25,7 @@ def show_info(ulog, verbose):
 
     #======================================================================================
     # Store time duration into a new csv file
-    s = datetime.today().strftime('%Y-%m-%d')
+    # s = datetime.today().strftime('%Y-%m-%d')
     # os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     f = open("time.csv", "w")
     f.write("Duration\n")
