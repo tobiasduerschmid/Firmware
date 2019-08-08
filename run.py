@@ -92,7 +92,7 @@ def main():
     }
 
     # create and write to json file
-    with open("config.json", 'w') as f:
+    with open("./config.json", 'w') as f:
         json.dump(x, f, indent=4)
 
 

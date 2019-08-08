@@ -8,17 +8,17 @@ from datetime import datetime
 def main():
     
     # if csv file for logging errors/fails doesn't exist, create it
-    if os.path.exists("./build/px4_sitl_default/tmp/rootfs/log/error_log.csv") == False:
+    if os.path.exists("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv") == False:
         header = pd.DataFrame([['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
                                 'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
                                 'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
                                 'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type']])
-        header.to_csv("./build/px4_sitl_default/tmp/rootfs/log/error_log.csv", index=False)
+        header.to_csv("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv", index=False)
 
     exit_conditions = ["Dangerous battery level!", "Error landing", "Error taking off", "Error arming drone", "Waiting for drone to be ready to arm"]
     
     # can change the number of simulations
-    for i in range(1):
+    for i in range(2):
         os.chdir("/Users/jeanie/Desktop/Firmware")
         px4 = subprocess.Popen(['python', 'run.py'], stdout=subprocess.PIPE)
         
@@ -63,17 +63,19 @@ def main():
                                         'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
                                         'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
                                         'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type'])
-                        with open("./build/px4_sitl_default/tmp/rootfs/log/error_log.csv", "a") as f:
+                        with open("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv", "a") as f:
                             df.to_csv(f, encoding='utf-8', index=False, header=False)
                         # kill px4, jmavsim, and mission
-                        os.chdir("./build/px4_sitl_default/bin")
-                        os.system("./px4-shutdown")
+                        # os.chdir("./build/px4_sitl_default/bin")
+                        # os.system("./px4-shutdown")
+                        # kill posix/px4?
+                        os.system("pkill -x px4")
                         px4.kill()
                         mission.kill()
                         error = True
                         # get rid of log file
                         s = datetime.today().strftime('%Y-%m-%d')
-                        os.chdir("../tmp/rootfs/log/%s" % s)
+                        os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
                         # remove ulog files before creating one
                         os.system("rm *.ulg")
                         break
@@ -87,18 +89,21 @@ def main():
                                     'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
                                     'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
                                     'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type'])
-                    with open("./build/px4_sitl_default/tmp/rootfs/log/error_log.csv", "a") as f:
+                    with open("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv", "a") as f:
                         df.to_csv(f, encoding='utf-8', index=False, header=False)
                     
                     # kill px4, jmavsim, and mission
-                    os.chdir("./build/px4_sitl_default/bin")
-                    os.system("./px4-shutdown")
+                    # os.chdir("./build/px4_sitl_default/bin")
+                    # os.system("./px4-shutdown")
+                    # kill posix/px4?
+                    os.system("pkill -x px4")
                     px4.kill()
                     mission.kill()
                     error = True
                     # get rid of log file
                     s = datetime.today().strftime('%Y-%m-%d')
-                    os.chdir("../tmp/rootfs/log/%s" % s)
+                    # os.chdir("../tmp/rootfs/log/%s" % s)
+                    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
                     # remove all csv and ulog files before creating one
                     os.system("rm *.ulg")
                     break
@@ -112,18 +117,21 @@ def main():
                                     'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
                                     'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
                                     'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type'])
-                    with open("./build/px4_sitl_default/tmp/rootfs/log/error_log.csv", "a") as f:
+                    with open("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv", "a") as f:
                         df.to_csv(f, encoding='utf-8', index=False, header=False)
                     
                     # kill px4, jmavsim, and mission
-                    os.chdir("./build/px4_sitl_default/bin")
-                    os.system("./px4-shutdown")
+                    # os.chdir("./build/px4_sitl_default/bin")
+                    # os.system("./px4-shutdown")
+                    # kill posix/px4?
+                    os.system("pkill -x px4")
                     px4.kill()
                     mission.kill()
                     error = True
                     # get rid of log file
                     s = datetime.today().strftime('%Y-%m-%d')
-                    os.chdir("../tmp/rootfs/log/%s" % s)
+                    # os.chdir("../tmp/rootfs/log/%s" % s)
+                    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
                     # remove all csv and ulog files before creating one
                     os.system("rm *.ulg")
                     break
@@ -137,18 +145,21 @@ def main():
                                     'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
                                     'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
                                     'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type'])
-                    with open("./build/px4_sitl_default/tmp/rootfs/log/error_log.csv", "a") as f:
+                    with open("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv", "a") as f:
                         df.to_csv(f, encoding='utf-8', index=False, header=False)
                     
                     # kill px4, jmavsim, and mission
-                    os.chdir("./build/px4_sitl_default/bin")
-                    os.system("./px4-shutdown")
+                    # os.chdir("./build/px4_sitl_default/bin")
+                    # os.system("./px4-shutdown")
+                    # kill posix/px4?
+                    os.system("pkill -x px4")
                     px4.kill()
                     mission.kill()
                     error = True
                     # get rid of log file
                     s = datetime.today().strftime('%Y-%m-%d')
-                    os.chdir("../tmp/rootfs/log/%s" % s)
+                    # os.chdir("../tmp/rootfs/log/%s" % s)
+                    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
                     # remove all csv and ulog files before creating one
                     os.system("rm *.ulg")
                     break
@@ -162,18 +173,21 @@ def main():
                                     'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
                                     'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
                                     'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type'])
-                    with open("./build/px4_sitl_default/tmp/rootfs/log/error_log.csv", "a") as f:
+                    with open("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv", "a") as f:
                         df.to_csv(f, encoding='utf-8', index=False, header=False)
                     
                     # kill px4, jmavsim, and mission
-                    os.chdir("./build/px4_sitl_default/bin")
-                    os.system("./px4-shutdown")
+                    # os.chdir("./build/px4_sitl_default/bin")
+                    # os.system("./px4-shutdown")
+                    # kill posix/px4?
+                    os.system("pkill -x px4")
                     px4.kill()
                     mission.kill()
                     error = True
                     # get rid of log file
                     s = datetime.today().strftime('%Y-%m-%d')
-                    os.chdir("../tmp/rootfs/log/%s" % s)
+                    # os.chdir("../tmp/rootfs/log/%s" % s)
+                    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
                     # remove all csv and ulog files before creating one
                     os.system("rm *.ulg")
                     break
@@ -184,8 +198,10 @@ def main():
             os.system("python data_organize.py")
             # time.sleep(15)
             # kill px4, jmavsim, and mission
-            os.chdir("./build/px4_sitl_default/bin")
-            os.system("./px4-shutdown")
+            # os.chdir("./build/px4_sitl_default/bin")
+            # os.system("./px4-shutdown")
+            # kill posix/px4?
+            os.system("pkill -x px4")
             px4.kill()
             mission.kill()
 

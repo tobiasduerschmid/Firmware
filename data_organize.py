@@ -76,7 +76,7 @@ def main():
 
     # remove all csv and ulog files before creating one
     s = datetime.today().strftime('%Y-%m-%d')
-    os.chdir("./build/px4_sitl_default/tmp/rootfs/log/%s" % s)
+    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     os.system("rm *.csv *.ulg")
 
     # if csv file doesn't exist, create it
@@ -97,7 +97,8 @@ if __name__ == "__main__":
     s = datetime.today().strftime('%Y-%m-%d')
     # call pyulog to create time.csv and all other csv files
     # os.chdir("/Users/jeaniechen/Documents/QGroundControl/Logs")
-    os.chdir("./build/px4_sitl_default/tmp/rootfs/log/%s" % s)
+    # os.chdir("./build/px4_sitl_default/tmp/rootfs/log/%s" % s)
+    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     file = glob.glob('*.ulg')
     ulg_info = "ulog_info {}".format(file[0])
     os.system(ulg_info)
