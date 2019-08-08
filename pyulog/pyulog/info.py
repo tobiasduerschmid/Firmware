@@ -8,8 +8,8 @@ from __future__ import print_function
 import argparse
 
 from .core import ULog
-import os
-from datetime import datetime
+# import os
+# from datetime import datetime
 
 #pylint: disable=too-many-locals, unused-wildcard-import, wildcard-import
 #pylint: disable=invalid-name
