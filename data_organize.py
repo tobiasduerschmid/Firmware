@@ -11,15 +11,18 @@ def main():
     list1 = glob.glob('*_battery_status_*.csv')
     list2 = glob.glob('*_vehicle_land_detected_*.csv')
     list3 = glob.glob('*_vehicle_status_0.csv')
-    time = pd.read_csv("time.csv")
+    # time = pd.read_csv("time.csv")
 
     # get duration
-    duration = time.at[0, 'Duration']
-    #print(duration)
-    hour = int(duration[0], 10)
-    minute = int(duration[2:4], 10)
-    seconds = int(duration[5:7], 10)
-    millisec_duration = hour*60*60*1000 + minute*60*1000 + seconds*1000
+    # duration = time.at[0, 'Duration']
+    # #print(duration)
+    # hour = int(duration[0], 10)
+    # minute = int(duration[2:4], 10)
+    # seconds = int(duration[5:7], 10)
+    # millisec_duration = hour*60*60*1000 + minute*60*1000 + seconds*1000
+    os.system("mv /User/jeanie/Desktop/missionapp/time.txt $PWD/")
+    time = open("time.txt", "r")
+    millisec_duration = time.read()
 
     # turn battery status csv into dataframe with only the "remaining" column
     battery = pd.read_csv(list1[0], usecols=['remaining'])
@@ -77,7 +80,7 @@ def main():
     # remove all csv and ulog files before creating one
     s = datetime.today().strftime('%Y-%m-%d')
     os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
-    os.system("rm *.csv *.ulg")
+    os.system("rm *.csv *.ulg *.txt")
 
     # if csv file doesn't exist, create it
     if os.path.exists("../missions.csv") == False:
@@ -100,9 +103,9 @@ if __name__ == "__main__":
     # os.chdir("./build/px4_sitl_default/tmp/rootfs/log/%s" % s)
     os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     file = glob.glob('*.ulg')
-    ulg_info = "ulog_info {}".format(file[0])
-    os.system(ulg_info)
-    time.sleep(7)
+    # ulg_info = "ulog_info {}".format(file[0])
+    # os.system(ulg_info)
+    # time.sleep(7)
     ulg_to_csv = "ulog2csv {}".format(file[0])
     os.system(ulg_to_csv)
     main()
