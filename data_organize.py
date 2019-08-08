@@ -7,6 +7,16 @@ import json
 from datetime import datetime
 
 def main():
+    # if csv file doesn't exist, create it
+    if os.path.exists("../missions.csv") == False:
+        header = pd.DataFrame([['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
+                                'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
+                                'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
+                                'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Duration (millisec)', 
+                                'Battery Consumption', 'Number of Ground Contacts', 
+                                'Number of Engine Failures', 'Number of Mission Failures']])
+        header.to_csv("../missions.csv", index=False)
+
     # Create 1 row dataframe for each mission
     list1 = glob.glob('*_battery_status_*.csv')
     list2 = glob.glob('*_vehicle_land_detected_*.csv')
@@ -33,7 +43,7 @@ def main():
     ground_contact = pd.read_csv(list2[0], usecols=['ground_contact'])
 
     # turn vehicle_status csv into dataframe with only the 'engine_failure', 'mission_failure', 'failure_detector_status' columns
-    vehicle_status = pd.read_csv(list3[0], usecols=['engine_failure', 'mission_failure', 'failure_detector_status'])
+    vehicle_status = pd.read_csv(list3[0], usecols=['engine_failure', 'mission_failure'])
 
     # calculate battery percent used
     numRows = len(battery_status.index)
@@ -48,8 +58,8 @@ def main():
     engine_fails = engine.get(key=1) if len(engine) == 2 else 0
     mission = vehicle_status['mission_failure'].value_counts()
     mission_fails = mission.get(key=1) if len(mission) == 2 else 0
-    detector = vehicle_status['failure_detector_status'].value_counts()
-    failures_detected = detector.get(key=1) if len(mission) == 2 else 0
+    # detector = vehicle_status['failure_detector_status'].value_counts()
+    # failures_detected = detector.get(key=1) if len(mission) == 2 else 0
 
     # read config.json and add those environment variables to csv file
     os.chdir("/Users/jeanie/Desktop/Firmware")
@@ -69,28 +79,28 @@ def main():
     # create dataframe
     data = [acc, gyo, mag, prs, rotor, grav["x"], grav["y"], grav["z"], magF["x"], magF["y"], magF["z"], 
             wind["x"], wind["y"], wind["z"], wd["x"], wd["y"], wd["z"], millisec_duration, battery_used, 
-            num_ground_contacts, engine_fails, mission_fails, failures_detected]
+            num_ground_contacts, engine_fails, mission_fails]
     df = pd.DataFrame([data], columns=['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
                                 'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
                                 'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
                                 'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Duration (millisec)', 
                                 'Battery Consumption', 'Number of Ground Contacts', 
-                                'Number of Engine Failures', 'Number of Mission Failures', 'Number of Failures Detected'])
+                                'Number of Engine Failures', 'Number of Mission Failures'])
 
     # remove all csv and ulog files before creating one
     s = datetime.today().strftime('%Y-%m-%d')
     os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     os.system("rm *.csv *.ulg *.txt")
 
-    # if csv file doesn't exist, create it
-    if os.path.exists("../missions.csv") == False:
-        header = pd.DataFrame([['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
-                                'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
-                                'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
-                                'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Duration (millisec)', 
-                                'Battery Consumption', 'Number of Ground Contacts', 
-                                'Number of Engine Failures', 'Number of Mission Failures', 'Number of Failures Detected']])
-        header.to_csv("../missions.csv", index=False)
+    # # if csv file doesn't exist, create it
+    # if os.path.exists("../missions.csv") == False:
+    #     header = pd.DataFrame([['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
+    #                             'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
+    #                             'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
+    #                             'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Duration (millisec)', 
+    #                             'Battery Consumption', 'Number of Ground Contacts', 
+    #                             'Number of Engine Failures', 'Number of Mission Failures', 'Number of Failures Detected']])
+    #     header.to_csv("../missions.csv", index=False)
 
     # append dataframe as row to csv file
     with open("../missions.csv", "a") as f:
