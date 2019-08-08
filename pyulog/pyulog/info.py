@@ -26,12 +26,12 @@ def show_info(ulog, verbose):
     #======================================================================================
     # Store time duration into a new csv file
     s = datetime.today().strftime('%Y-%m-%d')
-    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
+    # os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     f = open("time.csv", "w")
     f.write("Duration\n")
     f.write("{:d}:{:02d}:{:02d}".format(h2, m2, s2))
     f.close()
-    os.chdir("../../../../../../../pyulog")
+    # os.chdir("../../../../../../../pyulog")
     # os.system("mv time.csv ../build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     #======================================================================================
 
