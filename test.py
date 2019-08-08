@@ -18,7 +18,7 @@ def main():
     exit_conditions = ["Dangerous battery level!", "Error landing", "Error taking off", "Error arming drone", "Waiting for drone to be ready to arm"]
     
     # can change the number of simulations
-    for i in range(2):
+    for i in range(1):
         os.chdir("/Users/jeanie/Desktop/Firmware")
         px4 = subprocess.Popen(['python', 'run.py'], stdout=subprocess.PIPE)
         
