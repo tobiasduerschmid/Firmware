@@ -9,7 +9,7 @@ def main():
 
     # make posix jmavsim for the first time
     os.chdir("/Users/jeanie/Desktop/Firmware")
-    os.system("make posix_sitl_default jmavsim")
+    os.system("python run.py")
     time.sleep(15)
     os.system("pkill -x px4")
 
