@@ -118,12 +118,12 @@ if __name__ == "__main__":
     # os.system(ulg_info)
     # time.sleep(7)
     ulg_to_csv = "ulog2csv {}".format(file[0])
-    # os.system(ulg_to_csv)
+    os.system(ulg_to_csv)
     print(file[0])
     os.system("pwd")
-    file_path = "./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/{}/{}"
-    file_path = file_path.format(s, file[0])
-    subprocess.call(["ulog2csv", file_path])
+    # file_path = "./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/{}/{}"
+    # file_path = file_path.format(s, file[0])
+    # subprocess.call(["ulog2csv", file_path])
     time.sleep(7)
     main()
     
