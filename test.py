@@ -7,13 +7,6 @@ from datetime import datetime
 
 def main():
 
-    # make posix jmavsim for the first time
-    os.chdir("/Users/jeanie/Desktop/Firmware")
-    os.system("python run.py")
-    time.sleep(15)
-    os.system("pkill -x px4")
-
-    
     # if csv file for logging errors/fails doesn't exist, create it
     if os.path.exists("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv") == False:
         header = pd.DataFrame([['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
