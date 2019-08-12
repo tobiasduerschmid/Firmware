@@ -100,5 +100,5 @@ if __name__ == "__main__":
     # os.system("open -a QGroundControl")
     os.chdir("/Users/jeanie/Desktop/Firmware")
     main()
-    os.system("make px4_sitl jmavsim")
+    os.system("make posix_sitl_default jmavsim")
     
