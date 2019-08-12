@@ -4,6 +4,7 @@ import glob
 import os
 import time
 import json
+import subprocess
 from datetime import datetime
 
 def main():
@@ -117,7 +118,8 @@ if __name__ == "__main__":
     # os.system(ulg_info)
     # time.sleep(7)
     ulg_to_csv = "ulog2csv {}".format(file[0])
-    os.system(ulg_to_csv)
+    # os.system(ulg_to_csv)
+    subprocess.call(["ulog2csv", file[0]])
     time.sleep(7)
     main()
     
