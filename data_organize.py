@@ -119,6 +119,7 @@ if __name__ == "__main__":
     # time.sleep(7)
     ulg_to_csv = "ulog2csv {}".format(file[0])
     # os.system(ulg_to_csv)
+    print(file[0])
     subprocess.call(["ulog2csv", file[0]])
     time.sleep(7)
     main()
