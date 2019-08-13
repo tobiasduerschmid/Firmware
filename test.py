@@ -15,7 +15,7 @@ def main():
                                 'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type']])
         header.to_csv("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv", index=False)
 
-    exit_conditions = ["Dangerous battery level!", "Error landing", "Error taking off", "Error arming drone", "Waiting for drone to be ready to arm"]
+    exit_conditions = ["Dangerous battery level!", "Error landing", "Error taking off", "Error arming drone", "Waiting for drone to be ready to arm", "Waiting for drone to connect"]
     
     # can change the number of simulations
     for i in range(10):
@@ -47,10 +47,40 @@ def main():
 
         error = False
         num_arming = 0
+        num_connect = 0
         # read terminal output from missionapp
         for line in mission.stdout:
             print(line.rstrip())
             if any(x in line for x in exit_conditions):
+                if "Waiting for drone to connect" in line:
+                    num_connect = num_connect + 1
+                    # if connecting hangs
+                    if num_connect > 40:
+                        # append to error_log.csv
+                        # create dataframe
+                        data = [acc, gyo, mag, prs, rotor, grav["x"], grav["y"], grav["z"], magF["x"], magF["y"], magF["z"], 
+                                wind["x"], wind["y"], wind["z"], wd["x"], wd["y"], wd["z"], "PX4 connecting hangs"]
+                        df = pd.DataFrame([data], columns=['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
+                                        'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
+                                        'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
+                                        'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type'])
+                        with open("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/error_log.csv", "a") as f:
+                            df.to_csv(f, encoding='utf-8', index=False, header=False)
+                        # kill px4, jmavsim, and mission
+                        # os.chdir("./build/px4_sitl_default/bin")
+                        # os.system("./px4-shutdown")
+                        # kill posix/px4?
+                        os.system("pkill -x px4")
+                        px4.kill()
+                        mission.kill()
+                        error = True
+                        # get rid of log file
+                        s = datetime.today().strftime('%Y-%m-%d')
+                        os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
+                        # remove ulog files before creating one
+                        # os.system("rm *.ulg")
+                        break
+
                 if "Waiting for drone to be ready to arm" in line:
                     num_arming = num_arming + 1
                     # if arming hangs
