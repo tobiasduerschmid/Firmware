@@ -27,15 +27,8 @@ def main():
     list1 = glob.glob('*_battery_status_*.csv')
     list2 = glob.glob('*_vehicle_land_detected_*.csv')
     list3 = glob.glob('*_vehicle_status_0.csv')
-    # time = pd.read_csv("time.csv")
 
     # get duration
-    # duration = time.at[0, 'Duration']
-    # #print(duration)
-    # hour = int(duration[0], 10)
-    # minute = int(duration[2:4], 10)
-    # seconds = int(duration[5:7], 10)
-    # millisec_duration = hour*60*60*1000 + minute*60*1000 + seconds*1000
     time_file_path = ABSOLUTE_PATH_MISSIONAPP + "/time.txt"
     os.system("mv %s $PWD/" % time_file_path)
     time = open("time.txt", "r")
@@ -107,21 +100,12 @@ def main():
 
 if __name__ == "__main__":
     s = datetime.today().strftime('%Y-%m-%d')
-    # call pyulog to create time.csv and all other csv files
-    # os.chdir("/Users/jeaniechen/Documents/QGroundControl/Logs")
-    # os.chdir("./build/px4_sitl_default/tmp/rootfs/log/%s" % s)
+    # create csv files from ulog file
     today_log_folder = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/{}".format(s)
-    # os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
     os.chdir(today_log_folder)
     file = glob.glob('*.ulg')
-    # ulg_info = "ulog_info {}".format(file[0])
-    # os.system(ulg_info)
-    # time.sleep(7)
     ulg_to_csv = "ulog2csv {}".format(file[0])
     os.system(ulg_to_csv)
-    # file_path = "./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/{}/{}"
-    # file_path = file_path.format(s, file[0])
-    # subprocess.call(["ulog2csv", file_path], shell=True)
     time.sleep(7)
     main()
     
