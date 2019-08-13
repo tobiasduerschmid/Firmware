@@ -14,14 +14,14 @@ RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER = "./build/posix_sitl_default/tmp/rootfs/fs
 
 def main():
     # if csv file doesn't exist, create it
-    if os.path.exists("../missions1.csv") == False:
+    if os.path.exists("../missions_iter.csv") == False:
         header = pd.DataFrame([['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
                                 'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
                                 'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
                                 'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Number of Iterations', 
                                 'Battery Consumption', 'Number of Ground Contacts', 
                                 'Number of Engine Failures', 'Number of Mission Failures']])
-        header.to_csv("../missions1.csv", index=False)
+        header.to_csv("../missions_iter.csv", index=False)
 
     # Create 1 row dataframe for each mission
     list1 = glob.glob('*_battery_status_*.csv')
@@ -94,7 +94,7 @@ def main():
     os.system("rm *.csv *.ulg *.txt")
 
     # append dataframe as row to csv file
-    with open("../missions1.csv", "a") as f:
+    with open("../missions_iter.csv", "a") as f:
         df.to_csv(f, encoding='utf-8', index=False, header=False)
 
 if __name__ == "__main__":
