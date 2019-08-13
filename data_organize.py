@@ -7,6 +7,11 @@ import json
 import subprocess
 from datetime import datetime
 
+# Paths
+ABSOLUTE_PATH_FIRMWARE = "/Users/jeanie/Desktop/Firmware"
+ABSOLUTE_PATH_MISSIONAPP = "/Users/jeanie/Desktop/missionapp"
+RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER = "./build/posix_sitl_default/tmp/rootfs/fs/microsd/log"
+
 def main():
     # if csv file doesn't exist, create it
     if os.path.exists("../missions.csv") == False:
@@ -31,7 +36,8 @@ def main():
     # minute = int(duration[2:4], 10)
     # seconds = int(duration[5:7], 10)
     # millisec_duration = hour*60*60*1000 + minute*60*1000 + seconds*1000
-    os.system("mv /Users/jeanie/Desktop/missionapp/time.txt $PWD/")
+    time_file_path = ABSOLUTE_PATH_MISSIONAPP + "/time.txt"
+    os.system("mv %s $PWD/" % time_file_path)
     time = open("time.txt", "r")
     millisec_duration = time.read()
 
@@ -63,7 +69,7 @@ def main():
     # failures_detected = detector.get(key=1) if len(mission) == 2 else 0
 
     # read config.json and add those environment variables to csv file
-    os.chdir("/Users/jeanie/Desktop/Firmware")
+    os.chdir(ABSOLUTE_PATH_FIRMWARE)
     with open("./config.json") as json_file:
         data = json.load(json_file)
         acc = data["sensor_noise_acc"]
@@ -90,18 +96,10 @@ def main():
 
     # remove all csv and ulog files before creating one
     s = datetime.today().strftime('%Y-%m-%d')
-    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
+    today_log_folder = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/{}".format(s)
+    # os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
+    os.chdir(today_log_folder)
     os.system("rm *.csv *.ulg *.txt")
-
-    # # if csv file doesn't exist, create it
-    # if os.path.exists("../missions.csv") == False:
-    #     header = pd.DataFrame([['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
-    #                             'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
-    #                             'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
-    #                             'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Duration (millisec)', 
-    #                             'Battery Consumption', 'Number of Ground Contacts', 
-    #                             'Number of Engine Failures', 'Number of Mission Failures', 'Number of Failures Detected']])
-    #     header.to_csv("../missions.csv", index=False)
 
     # append dataframe as row to csv file
     with open("../missions.csv", "a") as f:
@@ -112,7 +110,9 @@ if __name__ == "__main__":
     # call pyulog to create time.csv and all other csv files
     # os.chdir("/Users/jeaniechen/Documents/QGroundControl/Logs")
     # os.chdir("./build/px4_sitl_default/tmp/rootfs/log/%s" % s)
-    os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
+    today_log_folder = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/{}".format(s)
+    # os.chdir("./build/posix_sitl_default/tmp/rootfs/fs/microsd/log/%s" % s)
+    os.chdir(today_log_folder)
     file = glob.glob('*.ulg')
     # ulg_info = "ulog_info {}".format(file[0])
     # os.system(ulg_info)

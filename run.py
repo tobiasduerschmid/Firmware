@@ -6,6 +6,9 @@ import json
 import random
 from datetime import datetime
 
+# Paths
+ABSOLUTE_PATH_FIRMWARE = "/Users/jeanie/Desktop/Firmware"
+
 def generate_mag_values(start, stop):
     temp_dict = {}
     # generate random values in range start to stop and add to list
@@ -43,6 +46,7 @@ def main():
     sensor_noise_prs = '%.3f'%(random.uniform(0.01, 0.9))
     rotor_orientation_values = ["+", "x"]
     # earth, moon, mars, jupiter, pluto, sun
+    # not using these values because simulator crashes if gravity is changed
     gravity_values = [{"x":0.0, "y":0.0, "z":9.80665}, 
                     {"x":0.0, "y":0.0, "z":1.62}, 
                     {"x":0.0, "y":0.0, "z":3.711}, 
@@ -72,7 +76,6 @@ def main():
 
     # Prob need to have a bunch of for loops to try every possible combo of values later
     # create random json string
-    # a = random.choice(deactivate_sensor_values)
     b = random.choice(rotor_orientation_values)
     # c = random.choice(gravity_values)
     d = random.choice(magnetic_field_values)
@@ -98,7 +101,7 @@ def main():
 
 if __name__ == "__main__":
     # os.system("open -a QGroundControl")
-    os.chdir("/Users/jeanie/Desktop/Firmware")
+    os.chdir(ABSOLUTE_PATH_FIRMWARE)
     main()
     os.system("make posix_sitl_default jmavsim")
     
