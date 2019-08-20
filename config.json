@@ -1,27 +1,27 @@
 {
-    "wind_deviation": {
-        "y": 1.8, 
-        "x": 6.9, 
-        "z": 9.9
-    }, 
-    "sensor_noise_acc": 0.031, 
-    "sensor_noise_mag": 0.007, 
-    "rotor_orientation": "+", 
-    "magnetic_field": {
-        "y": 0.056, 
-        "x": 0.156, 
-        "z": 0.562
-    }, 
-    "sensor_noise_gyo": 0.075, 
+    "sensor_noise_acc": 0.01,
+    "sensor_noise_gyo": 0.512,
+    "sensor_noise_mag": 0.0016,
+    "sensor_noise_prs": 0.64,
+    "rotor_orientation": "x",
     "gravity": {
-        "y": 0.0, 
-        "x": 0.0, 
+        "x": 0.0,
+        "y": 0.0,
         "z": 9.80665
-    }, 
+    },
+    "magnetic_field": {
+        "x": 0.65,
+        "y": 0.0,
+        "z": 0.2
+    },
     "wind": {
-        "y": 2.6, 
-        "x": 14.9, 
-        "z": 5.4
-    }, 
-    "sensor_noise_prs": 0.16
+        "x": 1.0,
+        "y": 0.0,
+        "z": 20.0
+    },
+    "wind_deviation": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 10.0
+    }
 }

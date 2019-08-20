@@ -3,16 +3,17 @@ import subprocess
 import time
 import pandas as pd
 import json
+import csv
 from datetime import datetime
 
 # Paths
-ABSOLUTE_PATH_FIRMWARE = "/Users/jeanie/Desktop/Firmware"
-ABSOLUTE_PATH_MISSIONAPP = "/Users/jeanie/Desktop/missionapp"
+ABSOLUTE_PATH_FIRMWARE = "/Users/jeaniechen/Desktop/CMU_REU/Firmware"
+ABSOLUTE_PATH_MISSIONAPP = "/Users/jeaniechen/Desktop/CMU_REU/missionapp"
 RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER = "./build/posix_sitl_default/tmp/rootfs/fs/microsd/log"
-NUM_EXPERIMENTS = 10
 
 def main():
 
+    # path to today's folder containing log files
     error_file_path = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/error_log.csv"
     s = datetime.today().strftime('%Y-%m-%d')
     today_log_folder = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/{}".format(s)
@@ -25,28 +26,50 @@ def main():
                                 'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type']])
         header.to_csv(error_file_path, index=False)
 
-    exit_conditions = ["Dangerous battery level!", "Error landing", "Error taking off", "Error arming drone", "Waiting for drone to be ready to arm", "Waiting for drone to connect"]
+    exit_conditions = ["DANGEROUS BATTERY LEVEL", "Gyro #0 fail", "Error landing", "Error taking off", "Error arming drone", "Waiting for drone to be ready to arm", "Waiting for drone to connect"]
     
-    # can change the number of simulations
-    for i in range(NUM_EXPERIMENTS):
+    # create csv file containing all configurations
+    os.system("python3 generate_values.py")
+
+    # read from file with all configurations and run one experiment for each line
+    with open("all_combinations.csv") as csvfile:
+        readCSV = csv.reader(csvfile)
+        configurations = list(readCSV)
+    
+    # main loop for experiment, each row from the csv file is a configuration for one experiment
+    for row in configurations:
         os.chdir(ABSOLUTE_PATH_FIRMWARE)
-        px4 = subprocess.Popen(['python', 'run.py'], stdout=subprocess.PIPE)
-        
-        # store config file variables
-        with open("./config.json") as json_file:
-            data = json.load(json_file)
-            acc = data["sensor_noise_acc"]
-            gyo = data["sensor_noise_gyo"]
-            mag = data["sensor_noise_mag"]
-            prs = data["sensor_noise_prs"]
-            rotor = data["rotor_orientation"]
-            grav = data["gravity"]
-            magF = data["magnetic_field"]
-            wind = data["wind"]
-            wd = data["wind_deviation"]
+        acc = float(row[0])
+        gyo = float(row[1])
+        mag = float(row[2])
+        prs = float(row[3])
+        rotor = row[4]
+        grav = {"x":0.0, "y":0.0, "z":9.80665}
+        magF = {"x":float(row[8]), "y":float(row[9]), "z":float(row[10])}
+        wind = {"x":float(row[11]), "y":float(row[12]), "z":float(row[13])}
+        wd = {"x":float(row[14]), "y":float(row[15]), "z":float(row[16])}
+
+        # write each row into config.json for simulator to parse
+        x = {
+            "sensor_noise_acc" : acc,
+            "sensor_noise_gyo" : gyo,
+            "sensor_noise_mag" : mag,
+            "sensor_noise_prs" : prs,
+            "rotor_orientation" : rotor,
+            "gravity" : grav,   # don't change gravity
+            "magnetic_field" : magF,
+            "wind" : wind,
+            "wind_deviation" : wd
+        }    
+        # create and write to json file
+        with open("./config.json", 'w') as f:
+            json.dump(x, f, indent=4)
+
+        # start px4 and jmavsim, jmavsim will read from config.json and change its environment accordingly
+        px4 = subprocess.Popen(['make', 'posix_sitl_default', 'jmavsim'], stdout=subprocess.PIPE)
 
         # wait for a bit for px4 to get ready before starting mission
-        time.sleep(15)
+        time.sleep(10)
         os.chdir(ABSOLUTE_PATH_MISSIONAPP)
         os.system("make")
         mission = subprocess.Popen(['./missionapp', '--enforcer=ElasticEnforcer', 'udp://'], 
@@ -56,6 +79,7 @@ def main():
         error = False
         num_arming = 0
         num_connect = 0
+        gyro_fail = 0
         # read terminal output from missionapp
         for line in mission.stdout:
             print(line.rstrip())
@@ -106,7 +130,7 @@ def main():
                         os.system("rm *.ulg")
                         break
 
-                if "Dangerous battery level!" in line:
+                if "DANGEROUS BATTERY LEVEL" in line:
                     # append to error_log.csv
                     # create dataframe
                     data = [acc, gyo, mag, prs, rotor, grav["x"], grav["y"], grav["z"], magF["x"], magF["y"], magF["z"], 
@@ -128,6 +152,31 @@ def main():
                     # remove all csv and ulog files before creating one
                     os.system("rm *.ulg")
                     break
+
+                if "Gyro #0 fail" in line:
+                    gyro_fail = gyro_fail + 1
+                    # if connecting hangs
+                    if gyro_fail > 15:
+                        # append to error_log.csv
+                        # create dataframe
+                        data = [acc, gyo, mag, prs, rotor, grav["x"], grav["y"], grav["z"], magF["x"], magF["y"], magF["z"], 
+                                wind["x"], wind["y"], wind["z"], wd["x"], wd["y"], wd["z"], "Gyro fail"]
+                        df = pd.DataFrame([data], columns=['Sensor Noise Accelerometer', 'Sensor Noise Gyroscope', 'Sensor Noise Magnetometer', 
+                                        'Sensor Noise Pressure', 'Rotor Orientation', 'Gravity_x', 'Gravity_y', 'Gravity_z', 
+                                        'Magnetic Field_x', 'Magnetic Field_y', 'Magnetic Field_z', 'Wind_x', 'Wind_y', 'Wind_z', 
+                                        'Wind Deviation_x', 'Wind Deviation_y', 'Wind Deviation_z', 'Error Type'])
+                        with open(error_file_path, "a") as f:
+                            df.to_csv(f, encoding='utf-8', index=False, header=False)
+                        # kill px4, jmavsim, and mission
+                        os.system("pkill -x px4")
+                        px4.kill()
+                        mission.kill()
+                        error = True
+                        # get rid of log file
+                        os.chdir(today_log_folder)
+                        # remove all csv and ulog files before creating one
+                        os.system("rm *.ulg")
+                        break
 
                 if "Error landing" in line:
                     # append to error_log.csv
@@ -202,7 +251,6 @@ def main():
             # wait for mission to end
             mission.communicate()
             os.system("python data_organize.py")
-            # time.sleep(15)
             # kill px4, jmavsim, and mission
             os.system("pkill -x px4")
             px4.kill()

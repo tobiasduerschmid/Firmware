@@ -1,13 +1,13 @@
 import pandas as pd
 import glob
 import os
-import time
 import json
 import random
 from datetime import datetime
 
+
 # Paths
-ABSOLUTE_PATH_FIRMWARE = "/Users/jeanie/Desktop/Firmware"
+ABSOLUTE_PATH_FIRMWARE = "/Users/jeaniechen/Desktop/CMU_REU/Firmware"
 
 def generate_mag_values(start, stop):
     temp_dict = {}
@@ -39,11 +39,16 @@ def generate_wind_values(start, stop):
 def main():
     # can use random.choice() to choose random element from list
     # space of values for each parameter
-    # deactivate_sensor_values = [True, False]
-    sensor_noise_acc = '%.3f'%(random.uniform(0.01, 0.1))
-    sensor_noise_gyo = '%.3f'%(random.uniform(0.001, 0.09))
-    sensor_noise_mag = '%.3f'%(random.uniform(0.0001, 0.01))
-    sensor_noise_prs = '%.3f'%(random.uniform(0.01, 0.9))
+    # sensor_noise_acc = '%.3f'%(random.uniform(0.01, 0.1))
+    # sensor_noise_gyo = '%.3f'%(random.uniform(0.001, 0.09))
+    # sensor_noise_mag = '%.3f'%(random.uniform(0.0001, 0.01))
+    # sensor_noise_prs = '%.3f'%(random.uniform(0.01, 0.9))
+    # try increasing the range of sensor noise values by a factor of 10?
+    sensor_noise_acc = '%.3f'%(random.uniform(0.01, 1))
+    sensor_noise_gyo = '%.3f'%(random.uniform(0.001, 0.9))
+    sensor_noise_mag = '%.3f'%(random.uniform(0.0001, 0.1))
+    sensor_noise_prs = '%.3f'%(random.uniform(0.01, 1))
+
     rotor_orientation_values = ["+", "x"]
     # earth, moon, mars, jupiter, pluto, sun
     # not using these values because simulator crashes if gravity is changed
@@ -100,7 +105,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # os.system("open -a QGroundControl")
     os.chdir(ABSOLUTE_PATH_FIRMWARE)
     main()
     os.system("make posix_sitl_default jmavsim")
