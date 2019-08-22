@@ -15,8 +15,6 @@ def main():
 
     # path to today's folder containing log files
     error_file_path = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/error_log.csv"
-    s = datetime.today().strftime('%Y-%m-%d')
-    today_log_folder = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/{}".format(s)
 
     # if csv file for logging errors/fails doesn't exist, create it
     if os.path.exists(error_file_path) == False:
@@ -38,6 +36,8 @@ def main():
     
     # main loop for experiment, each row from the csv file is a configuration for one experiment
     for row in configurations:
+        s = datetime.today().strftime('%Y-%m-%d')
+        today_log_folder = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/{}".format(s)
         os.chdir(ABSOLUTE_PATH_FIRMWARE)
         acc = float(row[0])
         gyo = float(row[1])

@@ -14,8 +14,7 @@ NUM_EXPERIMENTS = 300
 def main():
 
     error_file_path = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/error_log.csv"
-    s = datetime.today().strftime('%Y-%m-%d')
-    today_log_folder = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/{}".format(s)
+    
 
     # if csv file for logging errors/fails doesn't exist, create it
     if os.path.exists(error_file_path) == False:
@@ -29,6 +28,8 @@ def main():
     
     # can change the number of simulations
     for i in range(NUM_EXPERIMENTS):
+        s = datetime.today().strftime('%Y-%m-%d')
+        today_log_folder = RELATIVE_PATH_FIRMWARE_TO_LOG_FOLDER + "/{}".format(s)
         os.chdir(ABSOLUTE_PATH_FIRMWARE)
         px4 = subprocess.Popen(['python', 'run.py'], stdout=subprocess.PIPE)
         
